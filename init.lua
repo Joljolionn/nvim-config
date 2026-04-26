@@ -11,6 +11,7 @@ vim.opt.shiftwidth = 2 -- Quantidade de espaços para indentação automática (
 vim.opt.softtabstop = 2 -- Quantidade de espaços ao pressionar TAB no modo insert
 vim.opt.expandtab = true -- Converte TAB em espaços (use `false` se quiser TABs literais)
 
+vim.highlight.priorities.semantic_tokens = 95
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -131,3 +132,22 @@ vim.api.nvim_create_user_command("LspRestart", function()
 	vim.cmd("edit")
 	print("LSP Restarted")
 end, {})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    -- Isso desativa as cores do LSP e deixa o Treesitter brilhar sozinho
+    if client then
+      client.server_capabilities.semanticTokensProvider = nil
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
+    if lang then
+      pcall(vim.treesitter.start)
+    end
+  end,
+})
