@@ -52,6 +52,17 @@ vim.lsp.config("pyright", {
 	},
 })
 
+-- Configuração padrão para Docker
+vim.lsp.config("dockerls", {
+	settings = {
+		docker = {
+			languageserver = {
+				formatter = "prettier",
+			},
+		},
+	},
+})
+
 require("flutter-tools").setup({
 	lsp = {
 		capabilities = caps,
