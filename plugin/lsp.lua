@@ -54,10 +54,27 @@ vim.lsp.config("pyright", {
 
 -- Configuração padrão para Docker
 vim.lsp.config("dockerls", {
+	capabilities = caps,
 	settings = {
 		docker = {
 			languageserver = {
 				formatter = "prettier",
+			},
+		},
+	},
+})
+
+vim.lsp.config("yamlls", {
+	capabilities = caps,
+	settings = {
+		redhat = {
+			telemetry = {
+				enabled = false,
+			},
+		},
+		yaml = {
+			format = {
+				enable = false,
 			},
 		},
 	},
@@ -90,6 +107,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts)
 		vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
 		vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
+    vim.keymap.set("n", "<leader>del", "<cmd>Telescope diagnostics bufnr=0<cr>", { desc = "Document Diagnostics" })
+		vim.keymap.set("n", "<leader>deg", "<cmd>Telescope diagnostics<cr>", { desc = "Workspace Diagnostics" })
 	end,
 })
 
